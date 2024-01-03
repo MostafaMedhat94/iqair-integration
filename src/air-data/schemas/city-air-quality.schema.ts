@@ -22,5 +22,8 @@ export class CityAirQuality extends Document {
   createdAt: Date;
 }
 
-export const CityAirQualitySchema =
-  SchemaFactory.createForClass(CityAirQuality);
+const CityAirQualitySchema = SchemaFactory.createForClass(CityAirQuality);
+
+CityAirQualitySchema.index({ 'pollution.aqius': -1 });
+
+export { CityAirQualitySchema };
