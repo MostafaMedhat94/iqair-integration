@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AirDataService } from './air-data.service';
 import { AirDataController } from './air-data.controller';
 import { CityAirQuality, CityAirQualitySchema } from './schemas';
+import { Logger } from 'src/logger/logger.service';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { CityAirQuality, CityAirQualitySchema } from './schemas';
     ]),
   ],
   controllers: [AirDataController],
-  providers: [AirDataService, ConfigService],
+  providers: [ConfigService, AirDataService, Logger],
 })
 export class AirDataModule {}
