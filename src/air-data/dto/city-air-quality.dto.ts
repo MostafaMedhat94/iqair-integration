@@ -6,9 +6,9 @@ import {
   IsNumber,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-class CityPollution {
+export class CityPollution {
   @IsString()
-  ts: string;
+  ts: Date | string;
 
   @IsNumber()
   aqius: number;
