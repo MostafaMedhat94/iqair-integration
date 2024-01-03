@@ -1,8 +1,26 @@
 version: '3'
 services:
-  mongodb:
-    image: mongo
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - 27017:27017
+      - '3000:3000'
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=mongodb+srv://fulltank:E2i99oRGOt73y7cX@cluster-1.xijvotz.mongodb.net/airData?retryWrites=true&w=majority
+      - IQ_AIR_API_URL=http://api.airvisual.com/v2/nearest_city
+      - NEAREST_CITY_QUERY=?lat={{LATITUDE}}&lon={{LONGITUDE}}&key={{API_KEY}}
+      - API_KEY='24cb85de-3d94-4207-934d-05734ecb4454'
+
+  mongo:
+    image: mongo:4.4
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: airData
+      MONGO_INITDB_ROOT_USERNAME: fulltank
+      MONGO_INITDB_ROOT_PASSWORD: E2i99oRGOt73y7cX
     volumes:
       - ./data:/data/db
