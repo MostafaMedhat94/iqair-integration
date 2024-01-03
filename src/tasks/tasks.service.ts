@@ -10,25 +10,29 @@ export class TasksService {
 
   constructor(private readonly airDataService: AirDataService) {}
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron(CronExpression.EVERY_MINUTE)
   async handleCron() {
-    const data = await this.airDataService.getCityAirQuality(
-      CITIES.Paris.lat,
-      CITIES.Paris.lon,
-    );
+    try {
+      const data = await this.airDataService.getCityAirQuality(
+        CITIES.Paris.lat,
+        CITIES.Paris.lon,
+      );
 
-    if (data.status === IQAirResponseStatus.SUCCESS) {
-      const cityAirQuality = {
-        city: data.data.city,
-        coordinates: data.data.location.coordinates,
-        pollution: data.data.current.pollution,
-      };
+      if (data.status === IQAirResponseStatus.SUCCESS) {
+        const cityAirQuality = {
+          city: data.data.city,
+          coordinates: data.data.location.coordinates,
+          pollution: data.data.current.pollution,
+        };
 
-      await this.airDataService.saveCityAirQuality(cityAirQuality);
+        await this.airDataService.saveCityAirQuality(cityAirQuality);
+
+        return;
+      }
+
+      this.logger.error(data);
+    } catch (error) {
+      this.logger.error(error);
     }
-
-    // Save data to the database
-    this.logger.debug('Called every 10 seconds');
-    this.logger.debug(data);
   }
 }
