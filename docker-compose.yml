@@ -20,3 +20,19 @@ services:
     restart: always
     volumes:
       - ./data:/data/db
+
+  e2e-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.e2e
+    ports:
+      - '3300:3300'
+    depends_on:
+      - mongodb
+    environment:
+      - NODE_ENV=test
+      - MONGODB_URI=mongodb://mongodb:27017/airDataTest
+      - IQ_AIR_API_URL=http://api.airvisual.com/v2/nearest_city
+      - NEAREST_CITY_QUERY=?lat={{LATITUDE}}&lon={{LONGITUDE}}&key={{API_KEY}}
+      - API_KEY=24cb85de-3d94-4207-934d-05734ecb4454
+      - PORT=3300

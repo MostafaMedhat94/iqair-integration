@@ -1,0 +1,15 @@
+# Stage 1: Build the application and tests
+FROM node:18 AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm ci
+
+COPY . .
+
+# Stage 2: Run the tests
+FROM build AS test
+
+CMD npm run test:e2e
