@@ -6,7 +6,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AirDataService } from './air-data.service';
-import { Logger } from 'src/logger/logger.service';
+import { Logger } from '../logger/logger.service';
 import {
   CityAirQualityResponseDTO,
   CityHighestPollutionResponseDTO,
@@ -14,7 +14,7 @@ import {
   LocationDto,
 } from './dto';
 
-@Controller('air-data')
+@Controller('air-quality')
 export class AirDataController {
   constructor(
     private readonly logger: Logger,
