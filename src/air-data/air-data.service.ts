@@ -5,10 +5,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
   CityAirQualityDTO,
-  CityAirQualityResponseDTO,
   IQAirNearestCityErrorDTO,
   IQAirNearestCityResponseDTO,
-  IQAirResponseStatus,
 } from './dto';
 import { CityHighestPollutionResponseDTO } from './dto/city-highest-pollution.dto';
 
@@ -26,22 +24,6 @@ export class AirDataService {
     this.iqAirApiUrl = configService.get<string>('IQ_AIR_API_URL');
     this.apiKey = configService.get<string>('API_KEY');
     this.nearestCityQuery = configService.get<string>('NEAREST_CITY_QUERY');
-  }
-  async getAirData(
-    lat: number,
-    long: number,
-  ): Promise<CityAirQualityResponseDTO | IQAirNearestCityErrorDTO> {
-    try {
-      const data = await this.getCityAirQuality(lat, long);
-
-      if (data.status === IQAirResponseStatus.FAIL) {
-        return data;
-      }
-
-      return { Result: { Pollution: data.data.current.pollution } };
-    } catch (error) {
-      throw error;
-    }
   }
 
   async saveCityAirQuality(
