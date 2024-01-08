@@ -1,48 +1,173 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Introduction
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Welcome to the documentation for **IQ Air Integration**, a powerful and flexible API built with NestJS. This documentation provides an overview of the API, its purpose, and how to use it effectively.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Purpose
 
-## Description
+**IQ Air Integration** is designed to _provide a flexible and powerful abstraction on top of IQ Air API_. It provides a comprehensive set of endpoints to _get the nearest city's air quality data and get the highest pollution date and time in a city's (e.g. Paris) history since the moment you get the service up and running_.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Audience
 
-## Installation
+This documentation is intended for developers, frontend engineers, and anyone who wants to interact with **IQ Air Integration**. It assumes a basic understanding of RESTful APIs, HTTP, and JavaScript/TypeScript. If you're new to NestJS or APIs in general, we recommend reviewing the [NestJS documentation](https://docs.nestjs.com/) and getting familiar with the basics before diving into this documentation.
+
+## Technologies Used
+
+**IQ Air Integration** is built using modern technologies and frameworks. Some of the key technologies used in the API include:
+
+- NestJS
+- TypeScript
+- MongoDB
+- Jest
+
+## Prerequisites
+
+Before you start using **IQ Air Integration**, make sure you have the following prerequisites in place:
+
+- Docker: Install Docker on your machine by following the instructions provided in the official Docker documentation: [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/). Docker will be used to run the API and manage the containerized environment.
+
+- Docker Compose: Install Docker Compose on your machine by following the instructions provided in the official Docker documentation: [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/). Docker Compose is a tool for defining and running multi-container Docker applications. It simplifies the process of running your API and any required services, such as databases or message queues, in a containerized environment.
+
+## Running the API
+
+To run **IQ Air Integration** using Docker and Docker Compose, follow these steps:
+
+1. Clone the repository and navigate to the project directory.
+
+2. Open a terminal or command prompt and run the following command to start the API and its dependencies:
 
 ```bash
-$ npm install
+$ docker-compose up --build
 ```
 
-## Running the app
+# API Endpoints
 
-```bash
-# development
-$ npm run start
+The **IQ Air Integration** provides the following endpoints to interact with the API:
 
-# watch mode
-$ npm run start:dev
+## `GET /air-quality/nearest-city?latitude=48.8566&longitude=2.349014`
 
-# production mode
-$ npm run start:prod
+**Description**: Retrieves the nearest city's air quality data.
+
+**Query Parameters**:
+
+- `latitude` (required): The city's latitude.
+- `longitude` (required): The city's longitude.
+
+**Response**:
+
+```json
+{
+  "Result": {
+    "Pollution": {
+      "ts": "2024-01-06T09:00:00.000Z",
+      "aqius": 31,
+      "mainus": "p2",
+      "aqicn": 15,
+      "maincn": "n2"
+    }
+  }
+}
+```
+
+## `GET /air-quality/highest-pollution`
+
+**Description**: Retrieves Paris' highest pollution date and time.
+
+**Response**:
+
+```json
+{
+  "Result": {
+    "pollution": {
+      "ts": "2024-01-01T14:00:00.000Z",
+      "aqius": 39,
+      "mainus": "p2",
+      "aqicn": 18,
+      "maincn": "p1"
+    },
+    "date": "2024-01-01",
+    "time": "15:02:50"
+  }
+}
+```
+
+# Error Handling
+
+The **IQ Air Integration** handles errors using the following error codes and error responses:
+
+## Error Codes
+
+| Error Code | Description           |
+| ---------- | --------------------- |
+| 400        | Bad Request           |
+| 404        | Not Found             |
+| 500        | Internal Server Error |
+
+## Error Responses
+
+### 400 Bad Request
+
+**Response**:
+
+```json
+{
+  "details": {
+    "message": [
+      "longitude must be a longitude string or number",
+      "longitude should not be empty"
+    ],
+    "error": "Bad Request",
+    "statusCode": 400
+  },
+  "statusCode": 400,
+  "timestamp": "2024-01-08T13:53:43.256Z",
+  "path": "/air-quality/nearest-city?latitude=48.8566"
+}
+```
+
+```json
+{
+  "details": {
+    "message": "Too Many Requests",
+    "error": "Bad Request",
+    "statusCode": 400
+  },
+  "statusCode": 400,
+  "timestamp": "2024-01-08T15:02:16.688Z",
+  "path": "/air-quality/nearest-city?latitude=48.8566&longitude=2.349014"
+}
+```
+
+### 404 Not Found
+
+**Response**:
+
+```json
+{
+  "details": {
+    "message": "Cannot GET /air-quality/highest-pollutions",
+    "error": "Not Found",
+    "statusCode": 404
+  },
+  "statusCode": 404,
+  "timestamp": "2024-01-08T13:34:38.480Z",
+  "path": "/air-quality/highest-pollutions"
+}
+```
+
+### 500 Internal Server Error
+
+**Response**:
+
+```json
+{
+  "details": {
+    "message": "Internal Server Error",
+    "statusCode": 500
+  },
+  "statusCode": 500,
+  "timestamp": "2024-01-08T15:07:00.366Z",
+  "path": "/air-quality/nearest-city?latitude=48.8566&longitude=2.349014"
+}
 ```
 
 ## Test
@@ -57,20 +182,3 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
-
-# iqair-integration
-IQAir Integration Using Nodejs
