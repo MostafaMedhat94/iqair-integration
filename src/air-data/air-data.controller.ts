@@ -11,6 +11,7 @@ import {
   CityAirQualityResponseDTO,
   CityHighestPollutionResponseDTO,
   IQAirNearestCityErrorDTO,
+  IQAirResponseStatus,
   LocationDto,
 } from './dto';
 
@@ -23,16 +24,24 @@ export class AirDataController {
 
   @Get('/nearest-city')
   async getNearestCityAirData(
-    @Query(ValidationPipe) locationDto: LocationDto,
+    @Query(ValidationPipe) location: LocationDto,
   ): Promise<CityAirQualityResponseDTO | IQAirNearestCityErrorDTO> {
     try {
-      return await this.airDataService.getAirData(
-        locationDto.latitude,
-        locationDto.longitude,
+      const { latitude, longitude } = location;
+
+      const data = await this.airDataService.getCityAirQuality(
+        latitude,
+        longitude,
       );
+
+      if (data.status === IQAirResponseStatus.FAIL) {
+        throw new BadRequestException(data.data.message);
+      }
+
+      return { Result: { Pollution: data.data.current.pollution } };
     } catch (error) {
       this.logger.error(error);
-      throw new BadRequestException();
+      throw error;
     }
   }
 
@@ -42,7 +51,7 @@ export class AirDataController {
       return await this.airDataService.getHighestPollution();
     } catch (error) {
       this.logger.error(error);
-      throw new BadRequestException();
+      throw error;
     }
   }
 }
