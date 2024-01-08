@@ -15,7 +15,7 @@ const logger = new Logger();
 describe('Air Data (e2e)', () => {
   let app: INestApplication;
   let airDataService = {
-    getAirData: () => TEST_FIXTURES.airDataResposne,
+    getAirData: async () => TEST_FIXTURES.airDataResposne,
   };
 
   beforeAll(async () => {
@@ -39,7 +39,7 @@ describe('Air Data (e2e)', () => {
   });
 
   it(`should get the nearest city air quality`, async () => {
-    const mockedResponse = airDataService.getAirData();
+    const mockedResponse = await airDataService.getAirData();
 
     const response = await request(app.getHttpServer())
       .get('/air-quality/nearest-city')
