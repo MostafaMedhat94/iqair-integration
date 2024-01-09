@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { AirDataService } from '../../src/air-data/air-data.service';
-import { IQAirResponseStatus } from '../../src/air-data/dto';
-import { CITIES } from '../../src/common/cities.constants';
+import { AirDataService } from '../air-data/air-data.service';
+import { IQAirResponseStatus } from '../air-data/dto';
+import { CITIES } from '../common/cities.constants';
 
 @Injectable()
 export class TasksService {
